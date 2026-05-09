@@ -4,16 +4,16 @@
     'summary': 'Hospital management module',
     'author': 'Natika',
     'depends': ['base'],
-
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
         'data/disease_data.xml',
     ],
-
     'demo': [
         'demo/demo_data.xml',
     ],
-
+    'installable': True,
     'application': True,
+
+    'web_icon': 'hr_hospital/static/description/icon.png',
 }
