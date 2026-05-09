@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <!-- Doctors -->
+    <record id="hr_hospital_doctor_1" model="hr_hospital.doctor">
+        <field name="name">Dr. Smith</field>
+        <field name="specialization">Therapist</field>
+    </record>
+
+    <record id="hr_hospital_doctor_2" model="hr_hospital.doctor">
+        <field name="name">Dr. Johnson</field>
+        <field name="specialization">Cardiologist</field>
+    </record>
+
+    <record id="hr_hospital_doctor_3" model="hr_hospital.doctor">
+        <field name="name">Dr. Brown</field>
+        <field name="specialization">Neurologist</field>
+    </record>
+
+    <!-- Patients -->
+    <record id="hr_hospital_patient_1" model="hr_hospital.patient">
+        <field name="name">John Doe</field>
+        <field name="age">30</field>
+        <field name="doctor_id" ref="hr_hospital_doctor_1"/>
+    </record>
+
+    <record id="hr_hospital_patient_2" model="hr_hospital.patient">
+        <field name="name">Jane Smith</field>
+        <field name="age">25</field>
+        <field name="doctor_id" ref="hr_hospital_doctor_2"/>
+    </record>
+
+    <record id="hr_hospital_patient_3" model="hr_hospital.patient">
+        <field name="name">Mike Brown</field>
+        <field name="age">40</field>
+        <field name="doctor_id" ref="hr_hospital_doctor_3"/>
+    </record>
+
+</odoo>

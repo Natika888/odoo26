@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="hr_hospital_disease_flu" model="hr_hospital.disease">
+        <field name="name">Flu</field>
+        <field name="description">Viral infection affecting respiratory system</field>
+    </record>
+
+    <record id="hr_hospital_disease_covid" model="hr_hospital.disease">
+        <field name="name">COVID-19</field>
+        <field name="description">Infectious disease caused by coronavirus</field>
+    </record>
+
+    <record id="hr_hospital_disease_diabetes" model="hr_hospital.disease">
+        <field name="name">Diabetes</field>
+        <field name="description">Chronic condition affecting blood sugar levels</field>
+    </record>
+
+</odoo>
