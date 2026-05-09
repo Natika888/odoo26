@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+.idea/
+odoo/
+third_party_addons/
+config/
