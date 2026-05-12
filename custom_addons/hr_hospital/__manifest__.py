@@ -1,9 +1,17 @@
 {
     'name': 'HR Hospital',
-    'version': '19.0.1.0.0',
     'summary': 'Hospital management module',
     'author': 'Natika',
+    'category': 'Customizations',
+    'license': 'LGPL-3',
+    'version': '19.0.1.0.0',
+
     'depends': ['base'],
+
+    'external_dependencies': {
+        'python': [],
+    },
+
     'data': [
         'security/ir.model.access.csv',
         'views/menu.xml',
@@ -13,7 +21,9 @@
         'demo/demo_data.xml',
     ],
     'installable': True,
-    'application': True,
+    'auto_install': False,
 
-    'web_icon': 'hr_hospital/static/description/icon.png',
+    'images': [
+        'static/description/icon.png'
+    ],
 }
