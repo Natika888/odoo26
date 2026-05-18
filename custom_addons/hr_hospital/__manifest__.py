@@ -14,9 +14,12 @@
 
     'data': [
         'security/ir.model.access.csv',
-        'views/menu.xml',
         'data/disease_data.xml',
+        'data/doctor_category_data.xml',
+        'views/menu.xml',
+        'wizards/visit_report_wizard_views.xml',
     ],
+
     'demo': [
         'demo/demo_data.xml',
     ],

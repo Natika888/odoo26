@@ -1,58 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- main menu-->
+    <!-- MAIN MENU -->
     <menuitem id="menu_hospital_root"
-              name="Госпіталь"
-              web_icon="hr_hospital,static/description/icon.png"
-    />
+              name="Hospital"
+              web_icon="hr_hospital,static/description/icon.png"/>
 
-    <!-- Action -->
+    <!-- ACTIONS -->
     <record id="action_hospital_patient" model="ir.actions.act_window">
-        <field name="name">Пацієнти</field>
+        <field name="name">Patients</field>
         <field name="res_model">hr_hospital.patient</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="action_hospital_doctor" model="ir.actions.act_window">
-        <field name="name">Лікарі</field>
+        <field name="name">Doctors</field>
         <field name="res_model">hr_hospital.doctor</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="action_hospital_disease" model="ir.actions.act_window">
-        <field name="name">Види захворювань</field>
+        <field name="name">Diseases</field>
         <field name="res_model">hr_hospital.disease</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="action_hospital_visit" model="ir.actions.act_window">
-        <field name="name">Візити</field>
+        <field name="name">Visits</field>
         <field name="res_model">hr_hospital.visit</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Menu-->
+    <!-- MASS REASSIGN DOCTOR -->
+    <record id="action_mass_reassign_doctor" model="ir.actions.server">
+        <field name="name">Reassign Doctor</field>
+        <field name="model_id" ref="model_hr_hospital_patient"/>
+        <field name="binding_model_id" ref="model_hr_hospital_patient"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+action = {
+    "type": "ir.actions.act_window",
+    "res_model": "mass.reassign.doctor.wizard",
+    "view_mode": "form",
+    "target": "new",
+    "context": {
+        "active_model": records._name,
+        "active_ids": records.ids
+    }
+}
+        ]]></field>
+    </record>
+
+    <!-- VISIT REPORT (PATIENT) -->
+    <record id="action_visit_report_patient" model="ir.actions.server">
+        <field name="name">Visit Report</field>
+        <field name="model_id" ref="model_hr_hospital_patient"/>
+        <field name="binding_model_id" ref="model_hr_hospital_patient"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+action = {
+    "type": "ir.actions.act_window",
+    "res_model": "visit.report.wizard",
+    "view_mode": "form",
+    "target": "new",
+    "context": {
+        "active_model": records._name,
+        "active_ids": records.ids
+    }
+}
+        ]]></field>
+    </record>
+
+    <!-- VISIT REPORT (DOCTOR) -->
+    <record id="action_visit_report_doctor" model="ir.actions.server">
+        <field name="name">Visit Report</field>
+        <field name="model_id" ref="model_hr_hospital_doctor"/>
+        <field name="binding_model_id" ref="model_hr_hospital_doctor"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+action = {
+    "type": "ir.actions.act_window",
+    "res_model": "visit.report.wizard",
+    "view_mode": "form",
+    "target": "new",
+    "context": {
+        "active_model": records._name,
+        "active_ids": records.ids
+    }
+}
+        ]]></field>
+    </record>
+
+    <!-- MENUS -->
     <menuitem id="menu_hospital_patients"
-              name="Пацієнти"
+              name="Patients"
               parent="menu_hospital_root"
               action="action_hospital_patient"/>
 
     <menuitem id="menu_hospital_doctors"
-              name="Лікарі"
+              name="Doctors"
               parent="menu_hospital_root"
               action="action_hospital_doctor"/>
 
+    <menuitem id="menu_hospital_visits"
+              name="Visits"
+              parent="menu_hospital_root"
+              action="action_hospital_visit"/>
 
-    <!-- List view -->
-    <record id="view_hospital_patient_list" model="ir.ui.view">
-        <field name="name">hospital.patient.list</field>
-        <field name="model">hr_hospital.patient</field>
+    <!-- LIST VIEWS -->
+    <record id="view_hospital_visit_list" model="ir.ui.view">
+        <field name="name">hospital.visit.list</field>
+        <field name="model">hr_hospital.visit</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/>
-
+                <field name="patient_id"/>
                 <field name="doctor_id"/>
+                <field name="disease_name"/>
+                <field name="planned_datetime"/>
+                <field name="visit_datetime"/>
+                <field name="state"/>
+                <field name="summary"/>
             </list>
         </field>
     </record>
@@ -63,18 +133,47 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="specialization"/>
+                <field name="gender"/>
+                <field name="age"/>
+                <field name="category_id"/>
+                <field name="is_intern" widget="boolean_toggle"/>
+                <field name="mentor_id"/>
             </list>
         </field>
     </record>
 
-    <record id="view_hospital_disease_list" model="ir.ui.view">
-        <field name="name">hospital.disease.list</field>
-        <field name="model">hr_hospital.disease</field>
+    <record id="view_hospital_patient_list" model="ir.ui.view">
+        <field name="name">hospital.patient.list</field>
+        <field name="model">hr_hospital.patient</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <field name="gender"/>
+                <field name="age"/>
+                <field name="personal_doctor_id"/>
             </list>
+        </field>
+    </record>
+
+    <!-- FORM VIEWS -->
+    <record id="view_hospital_patient_form" model="ir.ui.view">
+        <field name="name">hospital.patient.form</field>
+        <field name="model">hr_hospital.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="gender"/>
+                        <field name="birth_date"/>
+                        <field name="age"/>
+                    </group>
+                    <group>
+                        <field name="personal_doctor_id" domain="[('is_intern', '=', False)]"/>
+                        <field name="insurance_policy"/>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 
@@ -86,7 +185,9 @@
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="specialization"/>
+                        <field name="category_id"/>
+                        <field name="is_intern"/>
+                        <field name="mentor_id" invisible="not is_intern"/>
                     </group>
                 </sheet>
             </form>
@@ -102,12 +203,58 @@
                     <group>
                         <field name="name"/>
                         <field name="description"/>
+                        <field name="parent_id"/>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
 
+    <record id="view_hospital_visit_form" model="ir.ui.view">
+        <field name="name">hospital.visit.form</field>
+        <field name="model">hr_hospital.visit</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_set_planned"
+                            string="Planned"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state == 'planned'"/>
 
+                    <button name="action_done"
+                            string="Done"
+                            type="object"
+                            class="btn-success"
+                            invisible="state == 'done'"/>
+
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            class="btn-danger"
+                            invisible="state == 'canceled'"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="patient_id"/>
+                        <field name="doctor_id" domain="[('is_intern', '=', False)]"/>
+                        <field name="disease_id"/>
+                    </group>
+
+                    <group>
+                        <field name="planned_datetime"/>
+                        <field name="visit_datetime"/>
+                    </group>
+
+                    <group>
+                        <field name="summary"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
 </odoo>
