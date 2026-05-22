@@ -28,11 +28,11 @@
     <record id="action_hospital_visit" model="ir.actions.act_window">
         <field name="name">Visits</field>
         <field name="res_model">hr_hospital.visit</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,calendar,pivot,graph</field>
     </record>
 
     <!-- MASS REASSIGN DOCTOR -->
-    <record id="action_mass_reassign_doctor" model="ir.actions.server">
+    <record id="action_mass_reassign_doctor_server" model="ir.actions.server">
         <field name="name">Reassign Doctor</field>
         <field name="model_id" ref="model_hr_hospital_patient"/>
         <field name="binding_model_id" ref="model_hr_hospital_patient"/>
@@ -53,7 +53,7 @@ action = {
     </record>
 
     <!-- VISIT REPORT (PATIENT) -->
-    <record id="action_visit_report_patient" model="ir.actions.server">
+<record id="action_visit_report_patient" model="ir.actions.server">
         <field name="name">Visit Report</field>
         <field name="model_id" ref="model_hr_hospital_patient"/>
         <field name="binding_model_id" ref="model_hr_hospital_patient"/>
@@ -74,7 +74,7 @@ action = {
     </record>
 
     <!-- VISIT REPORT (DOCTOR) -->
-    <record id="action_visit_report_doctor" model="ir.actions.server">
+<record id="action_visit_report_doctor" model="ir.actions.server">
         <field name="name">Visit Report</field>
         <field name="model_id" ref="model_hr_hospital_doctor"/>
         <field name="binding_model_id" ref="model_hr_hospital_doctor"/>
@@ -149,8 +149,9 @@ action = {
             <list>
                 <field name="name"/>
                 <field name="gender"/>
-                <field name="age"/>
+                <field name="phone"/>
                 <field name="personal_doctor_id"/>
+                <field name="age"/>
             </list>
         </field>
     </record>
@@ -160,17 +161,34 @@ action = {
         <field name="name">hospital.patient.form</field>
         <field name="model">hr_hospital.patient</field>
         <field name="arch" type="xml">
+
             <form>
+                <header>
+                    <button name="action_open_visits"
+                            type="object"
+                            string="Visits"
+                            class="btn-primary"/>
+
+                    <button name="action_create_visit"
+                            type="object"
+                            string="New Visit"
+                            class="btn-secondary"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="name"/>
                         <field name="gender"/>
                         <field name="birth_date"/>
                         <field name="age"/>
+                        <field name="phone"/>
                     </group>
                     <group>
+                        <field name="doctor_id"/>
                         <field name="personal_doctor_id" domain="[('is_intern', '=', False)]"/>
                         <field name="insurance_policy"/>
+                    </group>
+                    <group>
+                        <field name="doctor_history_ids"/>
                     </group>
                 </sheet>
             </form>
@@ -185,9 +203,23 @@ action = {
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="specialization"/>
                         <field name="category_id"/>
                         <field name="is_intern"/>
                         <field name="mentor_id" invisible="not is_intern"/>
+                    </group>
+                    <group string="Interns">
+                        <field name="intern_ids" mode="kanban">
+                            <kanban>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div>
+                                            <field name="name"/>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
                     </group>
                 </sheet>
             </form>
@@ -234,6 +266,13 @@ action = {
                             class="btn-danger"
                             invisible="state == 'canceled'"/>
 
+                    <button name="action_open_same_disease_visits"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-medkit">
+                        <field name="disease_id" string="Same Disease" widget="statinfo"/>
+                    </button>
+
                     <field name="state" widget="statusbar"/>
                 </header>
 
@@ -257,4 +296,85 @@ action = {
         </field>
     </record>
 
+    <record id="view_hospital_visit_calendar" model="ir.ui.view">
+        <field name="name">hospital.visit.calendar</field>
+        <field name="model">hr_hospital.visit</field>
+        <field name="arch" type="xml">
+            <calendar string="Visits"
+                      date_start="planned_datetime"
+                      color="doctor_id">
+
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="disease_id"/>
+
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_hospital_visit_search" model="ir.ui.view">
+        <field name="name">hospital.visit.search</field>
+        <field name="model">hr_hospital.visit</field>
+        <field name="arch" type="xml">
+            <search>
+
+                <!-- search -->
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="disease_id"/>
+
+                <searchpanel>
+                    <field name="doctor_id" string="Doctors"/>
+                </searchpanel>
+
+                <!-- group by-->
+                <filter name="group_by_state"
+                        string="Status"
+                        context="{'group_by': 'state'}"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="view_hospital_patient_search" model="ir.ui.view">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hr_hospital.patient</field>
+        <field name="arch" type="xml">
+            <search>
+
+                <field name="name"/>
+                <field name="phone"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="view_hospital_visit_pivot" model="ir.ui.view">
+        <field name="name">hospital.visit.pivot</field>
+        <field name="model">hr_hospital.visit</field>
+        <field name="arch" type="xml">
+            <pivot string="Visits Analysis">
+
+                <field name="doctor_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="planned_datetime" type="col" interval="month"/>
+
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_hospital_visit_graph" model="ir.ui.view">
+        <field name="name">hospital.visit.graph</field>
+        <field name="model">hr_hospital.visit</field>
+        <field name="arch" type="xml">
+            <graph string="Visits Graph" type="bar" stacked="True">
+                <field name="planned_datetime" type="row" interval="month"/>
+                <field name="disease_id" type="col"/>
+            </graph>
+        </field>
+    </record>
+
 </odoo>
+
+
+

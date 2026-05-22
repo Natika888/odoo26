@@ -1,0 +1,32 @@
+<odoo>
+
+    <!-- CALENDAR VIEW -->
+    <record id="view_calendar_event_calendar_inherit_color" model="ir.ui.view">
+    <field name="name">calendar.event.calendar.inherit.color</field>
+    <field name="model">calendar.event</field>
+    <field name="inherit_id" ref="calendar.view_calendar_event_calendar"/>
+    <field name="priority">99</field>
+
+    <field name="arch" type="xml">
+        <xpath expr="//calendar" position="attributes">
+            <attribute name="color">color</attribute>
+        </xpath>
+    </field>
+</record>
+
+
+    <!-- FORM VIEW -->
+    <record id="view_calendar_event_form_inherit_color" model="ir.ui.view">
+        <field name="name">calendar.event.form.inherit.color</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="color" widget="color_picker"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

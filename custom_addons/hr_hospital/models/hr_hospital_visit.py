@@ -93,6 +93,17 @@ class HospitalVisit(models.Model):
         for rec in self:
             rec.state = 'planned'
 
+    def action_open_same_disease_visits(self):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Visits with same disease',
+            'res_model': 'hr_hospital.visit',
+            'view_mode': 'list,form',
+            'domain': [('disease_id', '=', self.disease_id.id)],
+        }
+
     @api.constrains('doctor_id')
     def _check_doctor_not_intern(self):
         for rec in self:

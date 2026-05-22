@@ -1,28 +1,17 @@
 <odoo>
-
     <record id="action_mass_reassign_doctor" model="ir.actions.act_window">
         <field name="name">Reassign Doctor</field>
         <field name="res_model">mass.reassign.doctor.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-
     <record id="patient_action_server" model="ir.actions.server">
         <field name="name">Reassign Doctor</field>
         <field name="model_id" ref="model_hr_hospital_patient"/>
         <field name="binding_model_id" ref="model_hr_hospital_patient"/>
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
-
-        <field name="code"><![CDATA[
-action = {
-    "type": "ir.actions.act_window",
-    "res_model": "mass.reassign.doctor.wizard",
-    "view_mode": "form",
-    "target": "new",
-    "context": {"active_ids": records.ids}
-}
-        ]]></field>
+        <field name="code">
+            <![CDATA[ action = { "type": "ir.actions.act_window", "res_model": "mass.reassign.doctor.wizard", "view_mode": "form", "target": "new", "context": {"active_ids": records.ids} } ]]></field>
     </record>
-
 </odoo>

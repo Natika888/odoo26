@@ -36,13 +36,24 @@ class HospitalDoctor(models.Model):
         domain=[('is_intern', '=', False)]
     )
 
+    intern_ids = fields.One2many(
+        comodel_name='hr_hospital.doctor',
+        inverse_name='mentor_id',
+        string='Interns'
+    )
+
     @api.depends('category_id')
     def _compute_is_intern(self):
+        intern_category = self.env.ref('hr_hospital.doctor_category_intern')
+
         for rec in self:
-            rec.is_intern = rec.category_id and rec.category_id.name == 'Лікар-інтерн'
+            rec.is_intern = rec.category_id == intern_category
 
     @api.constrains('is_intern', 'mentor_id')
     def _check_mentor(self):
         for rec in self:
             if rec.is_intern and not rec.mentor_id:
                 raise ValidationError("Intern must have a mentor")
+
+            if rec.mentor_id and rec.mentor_id.is_intern:
+                raise ValidationError("Mentor cannot be an intern")

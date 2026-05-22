@@ -13,11 +13,14 @@
     },
 
     'data': [
-        'security/ir.model.access.csv',
-        'data/disease_data.xml',
+
         'data/doctor_category_data.xml',
-        'views/menu.xml',
+        'data/disease_data.xml',
+        'views/hr_hospital_patient_views.xml',
         'wizards/visit_report_wizard_views.xml',
+        'wizards/mass_reassign_doctor_wizard.xml',
+        'wizards/server_actions.xml',
+        'views/menu.xml',
     ],
 
     'demo': [
@@ -25,6 +28,7 @@
     ],
     'installable': True,
     'auto_install': False,
+    'application': True,
 
     'images': [
         'static/description/icon.png'

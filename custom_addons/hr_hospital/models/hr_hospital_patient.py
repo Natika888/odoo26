@@ -28,3 +28,28 @@ class HospitalPatient(models.Model):
         string="Insurance Policy",
         size=20
     )
+
+    def action_open_visits(self):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Patient Visits',
+            'res_model': 'hr_hospital.visit',
+            'view_mode': 'list,form',
+            'domain': [('patient_id', '=', self.id)],
+        }
+
+    def action_create_visit(self):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'New Visit',
+            'res_model': 'hr_hospital.visit',
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {
+                'default_patient_id': self.id
+            }
+        }

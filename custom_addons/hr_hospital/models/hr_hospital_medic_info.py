@@ -6,7 +6,6 @@ from odoo import api, fields, models
 class HospitalMedicInfo(models.AbstractModel):
     _name = 'hr_hospital.medic.info'
     _description = 'Medical Info'
-    _abstract = True
 
     blood_group = fields.Selection(
         selection=[
@@ -37,6 +36,10 @@ class HospitalMedicInfo(models.AbstractModel):
     age = fields.Integer(
         string="Age",
         compute="_compute_age",
+    )
+
+    phone = fields.Char(
+        string="Phone"
     )
 
     @api.depends('birth_date')
