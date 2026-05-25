@@ -6,7 +6,6 @@ from odoo import api, fields, models
 class HospitalMedicInfo(models.AbstractModel):
     _name = 'hr_hospital.medic.info'
     _description = 'Medical Info'
-    _abstract = True
 
     blood_group = fields.Selection(
         selection=[

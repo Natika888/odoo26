@@ -38,11 +38,16 @@ class HospitalDoctor(models.Model):
 
     @api.depends('category_id')
     def _compute_is_intern(self):
-        for rec in self:
-            rec.is_intern = rec.category_id and rec.category_id.name == 'Лікар-інтерн'
+        intern_category = self.env.ref('hr_hospital.doctor_category_intern')
 
-    @api.constrains('is_intern', 'mentor_id')
-    def _check_mentor(self):
         for rec in self:
-            if rec.is_intern and not rec.mentor_id:
-                raise ValidationError("Intern must have a mentor")
+            rec.is_intern = rec.category_id == intern_category
+
+    @api.constrains('mentor_id', 'is_intern')
+    def _check_mentor(self):
+        for record in self:
+            if record.is_intern and not record.mentor_id:
+                raise ValidationError("Інтерн повинен мати ментора")
+
+            if record.mentor_id and record.mentor_id.is_intern:
+                raise ValidationError("Ментор не може бути інтерном")
