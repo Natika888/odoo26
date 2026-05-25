@@ -19,8 +19,25 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <!-- Button: open patient visits -->
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object"
+                                name="action_open_patient_visits"
+                                class="oe_stat_button"
+                                icon="fa-list">
+                            <field name="name" string="Visits"/>
+                        </button>
+                    </div>
+
+                    <!-- Button: create visit -->
+                    <button name="action_create_visit"
+                            type="object"
+                            string="Create Visit"
+                            class="btn-primary"/>
+
                     <group>
                         <field name="name"/>
+                        <field name="phone"/>
                         <field name="gender"/>
                         <field name="birth_date"/>
                         <field name="age"/>
@@ -31,6 +48,21 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <!-- SEARCH VIEW -->
+    <record id="view_hospital_patient_search" model="ir.ui.view">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hr_hospital.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Search by name -->
+                <field name="name"/>
+
+                <!-- Search by phone -->
+                <field name="phone"/>
+            </search>
         </field>
     </record>
 

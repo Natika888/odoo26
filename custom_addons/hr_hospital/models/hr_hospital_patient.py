@@ -11,6 +11,16 @@ class HospitalPatient(models.Model):
     _inherit = ['hr_hospital.medic.info']
 
     name = fields.Char(string='Name', required=True)
+    phone = fields.Char(string="Phone")
+    birth_date = fields.Date(string="Birth Date")
+
+    gender = fields.Selection(
+        [
+            ('male', 'Male'),
+            ('female', 'Female'),
+        ],
+        string="Gender"
+    )
     doctor_id = fields.Many2one('hr_hospital.doctor', string='Doctor')
 
     personal_doctor_id = fields.Many2one(
@@ -28,3 +38,26 @@ class HospitalPatient(models.Model):
         string="Insurance Policy",
         size=20
     )
+
+    def action_open_patient_visits(self):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Patient Visits',
+            'res_model': 'hr_hospital.visit',
+            'view_mode': 'list,form',
+            'domain': [('patient_id', '=', self.id)],
+        }
+
+    def action_create_visit(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr_hospital.visit',
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {
+                'default_patient_id': self.id,
+            }
+        }

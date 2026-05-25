@@ -50,6 +50,8 @@
                             string="Same Disease"
                             class="btn-primary"/>
 
+
+
                     <field name="state" widget="statusbar"/>
                 </header>
 

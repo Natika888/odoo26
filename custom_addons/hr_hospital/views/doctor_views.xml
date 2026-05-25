@@ -26,6 +26,11 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="specialization"/>
+                        <field name="user_id"/>
+                    </group>
+
+                    <group>
                         <field name="category_id"/>
                         <field name="is_intern"/>
                         <field name="mentor_id" invisible="not is_intern"/>

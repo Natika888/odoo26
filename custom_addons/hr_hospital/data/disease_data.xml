@@ -2,19 +2,16 @@
 
 <odoo>
 
-    <record id="hr_hospital_disease_flu" model="hr_hospital.disease">
-        <field name="name">Грип</field>
-
+    <record id="disease_flu" model="hr_hospital.disease">
+        <field name="name">Flu</field>
     </record>
 
-    <record id="hr_hospital_disease_covid" model="hr_hospital.disease">
-        <field name="name">Склероз</field>
-
+    <record id="disease_covid" model="hr_hospital.disease">
+        <field name="name">COVID-19</field>
     </record>
 
-    <record id="hr_hospital_disease_diabetes" model="hr_hospital.disease">
-        <field name="name">Діабет</field>
-
+    <record id="disease_diabetes" model="hr_hospital.disease">
+        <field name="name">Diabetes</field>
     </record>
 
 </odoo>
