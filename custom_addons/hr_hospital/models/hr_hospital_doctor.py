@@ -38,10 +38,15 @@ class HospitalDoctor(models.Model):
 
     @api.depends('category_id')
     def _compute_is_intern(self):
-        intern_category = self.env.ref('hr_hospital.doctor_category_intern')
+        intern_category = self.env.ref(
+            'hr_hospital.doctor_category_intern',
+            raise_if_not_found=False
+        )
 
         for rec in self:
-            rec.is_intern = rec.category_id == intern_category
+            rec.is_intern = bool(
+                intern_category and rec.category_id == intern_category
+            )
 
     @api.constrains('mentor_id', 'is_intern')
     def _check_mentor(self):

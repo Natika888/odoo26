@@ -13,12 +13,29 @@
     },
 
     'data': [
-        'security/ir.model.access.csv',
-        'data/disease_data.xml',
-        'data/doctor_category_data.xml',
-        'views/menu.xml',
-        'wizards/visit_report_wizard_views.xml',
-    ],
+
+    # SECURITY
+    'security/ir.model.access.csv',
+
+    # DATA
+    'data/doctor_category_data.xml',
+    'data/disease_data.xml',
+
+    # ACTIONS
+    'views/actions.xml',
+
+    # VIEWS
+    'views/patient_views.xml',
+    'views/doctor_views.xml',
+    'views/visit_views.xml',
+
+    # WIZARDS
+    'wizards/visit_report_wizard_views.xml',
+    'wizards/server_actions.xml',
+
+    # MENU
+    'views/menu.xml',
+],
 
     'demo': [
         'demo/demo_data.xml',
