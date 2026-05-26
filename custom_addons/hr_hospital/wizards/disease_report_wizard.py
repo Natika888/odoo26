@@ -42,6 +42,6 @@ class DiseaseReportWizard(models.TransientModel):
             'view_mode': 'list,form',
             'domain': domain,
             'context': {
-                'search_default_group_by_disease_id': 1
+                'group_by': ['disease_id']
             }
         }
