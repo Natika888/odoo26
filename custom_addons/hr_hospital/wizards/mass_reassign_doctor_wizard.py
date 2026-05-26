@@ -21,6 +21,13 @@ class MassReassignDoctorWizard(models.TransientModel):
             self.env.context.get('active_ids', [])
         )
 
+        for patient in patients:
+            self.env['hr_hospital.doctor.history'].create({
+                'patient_id': patient.id,
+                'doctor_id': self.doctor_id.id,
+                'change_date': fields.Datetime.now(),
+            })
+
         patients.write({
             'personal_doctor_id': self.doctor_id.id
         })
