@@ -32,6 +32,7 @@
     # WIZARDS
     'wizards/visit_report_wizard_views.xml',
     'wizards/server_actions.xml',
+    'wizards/disease_report_wizard_views.xml',
 
     # MENU
     'views/menu.xml',

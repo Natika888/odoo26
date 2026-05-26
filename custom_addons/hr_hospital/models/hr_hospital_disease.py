@@ -10,6 +10,9 @@ class HospitalDisease(models.Model):
     _name = 'hr_hospital.disease'
     _description = 'Disease'
 
+    _parent_name = "parent_id"
+    _parent_store = True
+
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
 
@@ -24,13 +27,13 @@ class HospitalDisease(models.Model):
         string="Child Diseases"
     )
 
-    # перевірка циклів
+    parent_path = fields.Char(index=True)
+
     @api.constrains('parent_id')
     def _check_no_recursion(self):
         if not self._check_recursion():
             raise ValidationError("Recursive hierarchy is not allowed")
 
-    # відображення ієрархії
     def name_get(self):
         result = []
         for rec in self:

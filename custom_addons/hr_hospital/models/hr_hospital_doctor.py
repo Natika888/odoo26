@@ -36,6 +36,12 @@ class HospitalDoctor(models.Model):
         domain=[('is_intern', '=', False)]
     )
 
+    intern_ids = fields.One2many(
+        comodel_name='hr_hospital.doctor',
+        inverse_name='mentor_id',
+        string="Interns"
+    )
+
     @api.depends('category_id')
     def _compute_is_intern(self):
         intern_category = self.env.ref(
@@ -56,3 +62,16 @@ class HospitalDoctor(models.Model):
 
             if record.mentor_id and record.mentor_id.is_intern:
                 raise ValidationError("Ментор не може бути інтерном")
+
+    def action_create_visit(self):
+        self.ensure_one()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr_hospital.visit',
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {
+                'default_doctor_id': self.id,
+            }
+        }

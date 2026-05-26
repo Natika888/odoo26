@@ -7,43 +7,80 @@
         <field name="name">Amosov I.I</field>
         <field name="specialization">Therapist</field>
         <field name="category_id" ref="doctor_category_specialist"/>
+        <field name="is_intern">False</field>
+        <field name="gender">male</field>
+        <field name="birth_date">1985-06-12</field>
+        <field name="blood_group">a_pos</field>
     </record>
 
     <record id="hr_hospital_doctor_3" model="hr_hospital.doctor">
         <field name="name">Sklifosofskiy T.T.</field>
         <field name="specialization">Surgeon</field>
         <field name="category_id" ref="doctor_category_senior"/>
+        <field name="is_intern">False</field>
+        <field name="gender">female</field>
+        <field name="birth_date">1980-02-20</field>
+        <field name="blood_group">b_pos</field>
     </record>
 
     <record id="hr_hospital_doctor_1" model="hr_hospital.doctor">
         <field name="name">Krykun N.M.</field>
-        <field name="specialization">Intern</field>
+        <field name="specialization">Surgeon</field>
         <field name="category_id" ref="doctor_category_intern"/>
+        <field name="is_intern">True</field>
         <field name="mentor_id" ref="hr_hospital_doctor_2"/>
+        <field name="gender">female</field>
+        <field name="birth_date">2001-09-10</field>
+        <field name="blood_group">o_pos</field>
+    </record>
+
+    <record id="hr_hospital_doctor_4" model="hr_hospital.doctor">
+        <field name="name">Koval A.A.</field>
+        <field name="specialization">Therapist</field>
+        <field name="category_id" ref="doctor_category_intern"/>
+        <field name="is_intern">True</field>
+        <field name="mentor_id" ref="hr_hospital_doctor_2"/>
+        <field name="gender">male</field>
+        <field name="birth_date">1998-03-15</field>
+        <field name="blood_group">a_pos</field>
+    </record>
+
+    <record id="hr_hospital_doctor_5" model="hr_hospital.doctor">
+        <field name="name">Melnyk O.O.</field>
+        <field name="specialization">Pediatrician</field>
+        <field name="category_id" ref="doctor_category_intern"/>
+        <field name="is_intern">True</field>
+        <field name="mentor_id" ref="hr_hospital_doctor_3"/>
+        <field name="gender">female</field>
+        <field name="birth_date">2000-07-22</field>
+        <field name="blood_group">b_pos</field>
     </record>
 
     <!-- Patients -->
     <record id="hr_hospital_patient_1" model="hr_hospital.patient">
         <field name="name">Ivan Petrenko</field>
-        <field name="doctor_id" ref="hr_hospital_doctor_2"/>
         <field name="phone">+380501112233</field>
+        <field name="personal_doctor_id" ref="hr_hospital_doctor_2"/>
         <field name="birth_date">1990-05-12</field>
+        <field name="blood_group">o_pos</field>
         <field name="gender">male</field>
     </record>
 
     <record id="hr_hospital_patient_2" model="hr_hospital.patient">
         <field name="name">Olena Ivanenko</field>
-        <field name="doctor_id" ref="hr_hospital_doctor_2"/>
         <field name="phone">+380671234567</field>
+        <field name="personal_doctor_id" ref="hr_hospital_doctor_2"/>
         <field name="birth_date">1985-09-23</field>
+        <field name="blood_group">o_pos</field>
         <field name="gender">female</field>
     </record>
 
     <record id="hr_hospital_patient_3" model="hr_hospital.patient">
         <field name="name">Andrii Shevchenko</field>
-        <field name="doctor_id" ref="hr_hospital_doctor_3"/>
         <field name="phone">+380931112244</field>
+        <field name="personal_doctor_id" ref="hr_hospital_doctor_3"/>
         <field name="birth_date">2000-01-15</field>
+        <field name="blood_group">o_pos</field>
         <field name="gender">male</field>
     </record>
 

@@ -63,4 +63,24 @@ action = {
 }
         ]]></field>
     </record>
+
+    <!-- Print: Disease Report -->
+    <record id="action_print_disease_report" model="ir.actions.server">
+        <field name="name">Disease Report</field>
+        <field name="model_id" ref="model_hr_hospital_doctor"/>
+        <field name="binding_model_id" ref="model_hr_hospital_doctor"/>
+        <field name="binding_type">report</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = {
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr_hospital.disease.report.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+            'default_doctor_ids': [(6, 0, records.ids)]
+            }
+            }
+        </field>
+    </record>
 </odoo>
