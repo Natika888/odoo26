@@ -36,6 +36,8 @@
 
     # MENU
     'views/menu.xml',
+
+    'reports/doctor_report.xml',
 ],
 
     'demo': [

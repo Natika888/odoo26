@@ -87,46 +87,68 @@
         </field>
     </record>
 
-    <!-- KANBAN VIEW -->
-<record id="view_hospital_doctor_kanban" model="ir.ui.view">
-    <field name="name">hospital.doctor.kanban</field>
-    <field name="model">hr_hospital.doctor</field>
-    <field name="arch" type="xml">
-        <kanban default_group_by="category_id">
+    <record id="view_hospital_doctor_kanban" model="ir.ui.view">
+        <field name="name">hospital.doctor.kanban</field>
+        <field name="model">hr_hospital.doctor</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="category_id">
 
-            <!-- fields used -->
-            <field name="name"/>
-            <field name="is_intern"/>
-            <field name="category_id"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="intern_ids"/>
+                <field name="intern_names"/>
+                <field name="is_intern"/>
 
-            <templates>
-                <t t-name="card">
-                    <div class="oe_kanban_card">
-                        <t t-if="!record.is_intern.raw_value">
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card">
+
+                            <!-- Name -->
+                            <strong>
+                                <field name="name"/>
+                            </strong>
+
+                            <!-- Category -->
                             <div>
+                                <field name="category_id"/>
+                            </div>
+
+                            <!-- for interns-->
+                            <div t-if="record.is_intern.raw_value">
+                                <strong>Mentor:</strong>
+                                <div>
+                                    <field name="mentor_id"/>
+                                </div>
+                            </div>
+
+                            <!-- for doctors-->
+                            <div t-if="!record.is_intern.raw_value and record.intern_names.value">
+                                <strong>Interns:</strong>
+                                <div>
+                                    <t t-foreach="record.intern_names.value.split(', ')" t-as="intern">
+                                        <div>
+                                            <t t-esc="intern"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Create Visit button  -->
+                            <div t-if="!record.is_intern.raw_value" style="margin-top:10px;">
                                 <button type="object"
                                         name="action_create_visit"
-                                        string="Create Visit"
-                                        class="btn btn-primary btn-sm"/>
+                                        class="btn btn-primary btn-sm">
+                                    Create Visit
+                                </button>
                             </div>
-                        </t>
 
-                        <strong>
-                            <field name="name"/>
-                        </strong>
-
-                        <div>
-                            <span t-if="record.is_intern.raw_value">Intern</span>
-                            <span t-else="">Doctor</span>
                         </div>
+                    </t>
+                </templates>
 
-                    </div>
-                </t>
-            </templates>
-
-        </kanban>
-    </field>
-</record>
+            </kanban>
+        </field>
+    </record>
 
     <!-- SEARCH VIEW -->
 <record id="view_hospital_doctor_search" model="ir.ui.view">

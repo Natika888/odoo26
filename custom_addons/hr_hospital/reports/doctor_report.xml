@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_doctor_document">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="doc">
+
+                <main>
+                    <div class="page">
+
+                        <!-- Company -->
+                        <strong t-esc="env.company.name"/>
+                        <div>
+                            <span t-esc="env.company.phone"/>
+                        </div>
+                        <div>
+                            <span t-esc="env.company.email"/>
+                        </div>
+
+                        <hr/>
+
+                        <!-- Doctor -->
+                        <h2>
+                            Doctor:
+                            <span t-esc="doc.name"/>
+                        </h2>
+
+                        <div>
+                            Specialization:
+                            <span t-esc="doc.specialization"/>
+                        </div>
+
+                        <p>Doctor report will be here...</p>
+
+                        <!-- Visit History -->
+                        <h3>Visit History</h3>
+
+                        <t t-set="visits"
+                           t-value="env['hr_hospital.visit'].search([('doctor_id', '=', doc.id)], order='planned_datetime desc')"/>
+
+                        <table style="width:100%; border-collapse: collapse;" border="1">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Patient</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <t t-foreach="visits" t-as="visit">
+                                    <tr>
+
+                                        <!-- Date -->
+                                        <td>
+                                            <span t-esc="visit.planned_datetime"/>
+                                        </td>
+
+                                        <!-- Patient -->
+                                        <td>
+                                            <span t-esc="visit.patient_id.name"/>
+                                        </td>
+
+                                        <!-- Status -->
+                                        <td t-att-style="
+                                            'background-color: yellow;' if visit.state == 'planned'
+                                            else 'background-color: lightgreen;' if visit.state == 'done'
+                                            else 'background-color: red;'
+                                        ">
+                                            <span t-esc="visit.state"/>
+                                        </td>
+
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <h3>Patients</h3>
+
+                        <t t-set="patients"
+                           t-value="env['hr_hospital.patient'].search([('personal_doctor_id', '=', doc.id)])"/>
+
+                        <table style="width:100%; border-collapse: collapse;" border="1">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Birth Date</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <t t-foreach="patients" t-as="patient">
+                                    <tr>
+
+                                        <td>
+                                            <span t-esc="patient.name"/>
+                                        </td>
+
+                                        <td>
+                                            <span t-esc="patient.gender"/>
+                                        </td>
+
+                                        <td>
+                                            <span t-esc="patient.birth_date"/>
+                                        </td>
+
+                                        <td>
+                                            <span t-esc="patient.phone"/>
+                                        </td>
+
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <hr/>
+
+                        <div style="font-size: 12px; margin-top: 20px;">
+                            <div>
+                                Printed on:
+                                <span t-esc="time.strftime('%Y-%m-%d')"/>
+                            </div>
+
+                            <div>
+                                City:
+                                <span t-esc="env.company.city"/>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_doctor" model="ir.actions.report">
+        <field name="name">Doctor Report</field>
+        <field name="model">hr_hospital.doctor</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_hospital.report_doctor_document</field>
+        <field name="report_file">hr_hospital.report_doctor_document</field>
+        <field name="binding_model_id" ref="model_hr_hospital_doctor"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

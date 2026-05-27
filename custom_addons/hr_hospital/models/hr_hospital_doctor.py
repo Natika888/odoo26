@@ -42,6 +42,11 @@ class HospitalDoctor(models.Model):
         string="Interns"
     )
 
+    intern_names = fields.Char(
+        string="Intern Names",
+        compute="_compute_intern_names"
+    )
+
     @api.depends('category_id')
     def _compute_is_intern(self):
         intern_category = self.env.ref(
@@ -75,3 +80,7 @@ class HospitalDoctor(models.Model):
                 'default_doctor_id': self.id,
             }
         }
+
+    def _compute_intern_names(self):
+        for rec in self:
+            rec.intern_names = ', '.join(rec.intern_ids.mapped('name'))
