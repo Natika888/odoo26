@@ -5,3 +5,4 @@ __pycache__/
 odoo/
 third_party_addons/
 config/
+custom_addons/qweb_tutorial/
