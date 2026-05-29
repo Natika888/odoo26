@@ -12,15 +12,7 @@ class HospitalPatient(models.Model):
 
     name = fields.Char(string='Name', required=True)
     phone = fields.Char(string="Phone")
-    # birth_date = fields.Date(string="Birth Date")
-    #
-    # gender = fields.Selection(
-    #     [
-    #         ('male', 'Male'),
-    #         ('female', 'Female'),
-    #     ],
-    #     string="Gender"
-    # )
+
     doctor_id = fields.Many2one('hr_hospital.doctor', string='Doctor')
 
     personal_doctor_id = fields.Many2one(
