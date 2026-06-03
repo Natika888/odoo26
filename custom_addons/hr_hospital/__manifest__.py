@@ -2,7 +2,8 @@
     'name': 'HR Hospital',
     'summary': 'Hospital management module',
     'author': 'Natika',
-    'category': 'Customizations',
+    'website': 'https://github.com/Natika888/hospital',
+    'category': 'Healthcare',
     'license': 'LGPL-3',
     'version': '19.0.1.0.0',
 
@@ -47,9 +48,11 @@
     ],
     'installable': True,
     'auto_install': False,
+    'application': True,
 
     'images': [
-        'static/description/icon.png'
+        'static/description/icon.png',
+        'static/description/banner.png'
     ],
 
 }
