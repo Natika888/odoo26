@@ -1,6 +1,6 @@
 import logging
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -20,6 +20,11 @@ class HospitalPatient(models.Model):
         string="Personal Doctor"
     )
 
+    user_id = fields.Many2one(
+        comodel_name='res.users',
+        string="User"
+    )
+
     doctor_history_ids = fields.One2many(
         comodel_name='hr_hospital.doctor.history',
         inverse_name='patient_id',
@@ -30,6 +35,18 @@ class HospitalPatient(models.Model):
         string="Insurance Policy",
         size=20
     )
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('user_id'):
+                vals['user_id'] = self.env.user.id
+        return super().create(vals_list)
+    #check
+    # def create(self, vals):
+    #     if not vals.get('user_id'):
+    #         vals['user_id'] = self.env.user.id
+    #     return super().create(vals)
 
     def action_open_patient_visits(self):
         self.ensure_one()

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--  Patient -->
+    <record id="rule_visit_patient_own" model="ir.rule">
+        <field name="name">Patient: own visits</field>
+        <field name="model_id" ref="model_hr_hospital_visit"/>
+        <field name="groups" eval="[Command.link(ref('hr_hospital.group_patient'))]"/>
+        <field name="domain_force">[('patient_id.user_id', '=', user.id)]</field>
+    </record>
+
+    <!--  Intern -->
+    <record id="rule_visit_intern_own" model="ir.rule">
+        <field name="name">Intern: own visits</field>
+        <field name="model_id" ref="model_hr_hospital_visit"/>
+        <field name="groups" eval="[Command.link(ref('hr_hospital.group_intern'))]"/>
+        <field name="domain_force">[('doctor_id.user_id', '=', user.id)]</field>
+    </record>
+
+    <!-- Doctor -->
+    <record id="rule_visit_doctor_all" model="ir.rule">
+        <field name="name">Doctor: own and interns visits</field>
+        <field name="model_id" ref="model_hr_hospital_visit"/>
+        <field name="groups" eval="[Command.link(ref('hr_hospital.group_doctor'))]"/>
+        <field name="domain_force">
+            ['|',
+                ('doctor_id.user_id', '=', user.id),
+                ('doctor_id.mentor_id.user_id', '=', user.id)
+            ]
+        </field>
+    </record>
+
+    <!--  Manager -->
+    <record id="rule_visit_manager" model="ir.rule">
+        <field name="name">Manager: all visits</field>
+        <field name="model_id" ref="model_hr_hospital_visit"/>
+        <field name="groups" eval="[Command.link(ref('hr_hospital.group_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!--  Admin -->
+    <record id="rule_visit_admin" model="ir.rule">
+        <field name="name">Admin: all visits</field>
+        <field name="model_id" ref="model_hr_hospital_visit"/>
+        <field name="groups" eval="[Command.link(ref('hr_hospital.group_admin'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+</odoo>

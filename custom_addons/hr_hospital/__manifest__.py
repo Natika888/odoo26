@@ -15,7 +15,9 @@
     'data': [
 
     # SECURITY
+    'security/hr_hospital_groups.xml',
     'security/ir.model.access.csv',
+    'security/record_rules.xml',
 
     # DATA
     'data/doctor_category_data.xml',
@@ -49,4 +51,10 @@
     'images': [
         'static/description/icon.png'
     ],
+
+    # 'test': [
+    #     'tests/test_patient.py',
+    #     'tests/test_visit.py',
+    # ],
 }
+

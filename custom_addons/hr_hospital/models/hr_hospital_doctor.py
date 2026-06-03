@@ -84,3 +84,16 @@ class HospitalDoctor(models.Model):
     def _compute_intern_names(self):
         for rec in self:
             rec.intern_names = ', '.join(rec.intern_ids.mapped('name'))
+
+
+@api.model
+def create(self, vals_list):
+    for vals in vals_list:
+        if not vals.get('user_id'):
+            vals['user_id'] = self.env.user.id
+    return super().create(vals_list)
+#check
+# def create(self, vals):
+#     if not vals.get('user_id'):
+#         vals['user_id'] = self.env.user.id
+#     return super().create(vals)

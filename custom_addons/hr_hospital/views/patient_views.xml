@@ -42,6 +42,7 @@
                         <field name="phone"/>
                         <field name="gender"/>
                         <field name="birth_date"/>
+                        <field name="user_id"/>
                         <field name="age"/>
                     </group>
                     <group>
