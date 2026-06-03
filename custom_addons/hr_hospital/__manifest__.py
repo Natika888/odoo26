@@ -52,9 +52,5 @@
         'static/description/icon.png'
     ],
 
-    # 'test': [
-    #     'tests/test_patient.py',
-    #     'tests/test_visit.py',
-    # ],
 }
 

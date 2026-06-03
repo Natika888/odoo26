@@ -1,7 +1,7 @@
 from .common import HospitalTestCommon
 from odoo.tests import tagged
 
-@tagged('post_install', 'at_install')
+@tagged('post_install', '-at_install')
 class TestPatient(HospitalTestCommon):
 
     def test_create_sets_user(self):

@@ -104,6 +104,7 @@ class HospitalVisit(models.Model):
             'domain': [('disease_id', '=', self.disease_id.id)],
         }
 
+
     @api.constrains('doctor_id')
     def _check_doctor_not_intern(self):
         for rec in self:

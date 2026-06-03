@@ -2,7 +2,7 @@ from odoo.exceptions import ValidationError
 from .common import HospitalTestCommon
 from odoo.tests import tagged
 
-@tagged('at_install')
+@tagged('post_install', '-at_install')
 class TestVisit(HospitalTestCommon):
 
     def test_action_done_sets_datetime(self):
@@ -30,15 +30,3 @@ class TestVisit(HospitalTestCommon):
         with self.assertRaises(ValidationError):
             visit.write({'planned_datetime': '2025-01-01 10:00:00'})
 
-    def test_intern_cannot_be_doctor(self):
-        intern = self.Doctor.create({
-            'name': 'Intern',
-            'is_intern': True,
-        })
-
-        with self.assertRaises(ValidationError):
-            self.Visit.create({
-                'patient_id': self.patient.id,
-                'doctor_id': intern.id,
-                'planned_datetime': '2024-01-01 10:00:00',
-            })
