@@ -4,8 +4,15 @@ from odoo.tests import tagged
 
 @tagged('post_install', '-at_install')
 class TestVisit(HospitalTestCommon):
+    """
+    Test cases for HospitalVisit model.
+
+    Covers visit state transitions and validation rules.
+    """
 
     def test_action_done_sets_datetime(self):
+        """ Test that action_done:
+        - sets state to 'done' - assigns visit_datetime if it was not set """
         visit = self.Visit.create({
             'patient_id': self.patient.id,
             'doctor_id': self.doctor.id,
@@ -19,6 +26,8 @@ class TestVisit(HospitalTestCommon):
         self.assertTrue(visit.visit_datetime)
 
     def test_cannot_modify_done_visit(self):
+        """ Test that completed visits cannot be modified.
+        Ensures that write operation raises ValidationError if trying to change planned datetime after visit is done. """
         visit = self.Visit.create({
             'patient_id': self.patient.id,
             'doctor_id': self.doctor.id,

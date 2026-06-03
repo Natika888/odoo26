@@ -7,6 +7,12 @@ _logger = logging.getLogger(__name__)
 
 
 class HospitalDoctor(models.Model):
+    """
+    Model representing a doctor.
+
+    Includes information about doctor's specialization, category,
+    mentorship relationships (interns and mentors), and linked system user.
+    """
     _name = 'hr_hospital.doctor'
     _description = 'Doctor'
     _inherit = ['hr_hospital.medic.info']
@@ -49,6 +55,8 @@ class HospitalDoctor(models.Model):
 
     @api.depends('category_id')
     def _compute_is_intern(self):
+        """ Compute whether the doctor is an intern.
+        A doctor is considered an intern if their category matches the predefined 'intern' category. """
         intern_category = self.env.ref(
             'hr_hospital.doctor_category_intern',
             raise_if_not_found=False
@@ -61,6 +69,9 @@ class HospitalDoctor(models.Model):
 
     @api.constrains('mentor_id', 'is_intern')
     def _check_mentor(self):
+        """ Validate mentor assignment.
+         Rules: - Intern must have a mentor - Mentor cannot be an intern
+         :raises ValidationError: if rules are violated """
         for record in self:
             if record.is_intern and not record.mentor_id:
                 raise ValidationError("Інтерн повинен мати ментора")
@@ -69,6 +80,8 @@ class HospitalDoctor(models.Model):
                 raise ValidationError("Ментор не може бути інтерном")
 
     def action_create_visit(self):
+        """ Open form to create a new visit with current doctor pre-filled.
+         :return: action dictionary for opening visit form """
         self.ensure_one()
 
         return {
@@ -82,18 +95,19 @@ class HospitalDoctor(models.Model):
         }
 
     def _compute_intern_names(self):
+        """ Compute a comma-separated list of intern names.
+        Used for quick display of all interns assigned to a doctor. """
         for rec in self:
             rec.intern_names = ', '.join(rec.intern_ids.mapped('name'))
 
+    @api.model
+    def create(self, vals_list):
+        """ Override create method to automatically assign current user.
+        If user_id is not provided, it will be set to the current user.
+        :param vals_list: list of values for new records
+        :return: created record(s) """
 
-@api.model
-def create(self, vals_list):
-    for vals in vals_list:
-        if not vals.get('user_id'):
-            vals['user_id'] = self.env.user.id
-    return super().create(vals_list)
-#check
-# def create(self, vals):
-#     if not vals.get('user_id'):
-#         vals['user_id'] = self.env.user.id
-#     return super().create(vals)
+        for vals in vals_list:
+            if not vals.get('user_id'):
+                vals['user_id'] = self.env.user.id
+        return super().create(vals_list)

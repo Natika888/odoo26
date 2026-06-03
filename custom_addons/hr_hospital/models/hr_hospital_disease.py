@@ -7,6 +7,12 @@ _logger = logging.getLogger(__name__)
 
 
 class HospitalDisease(models.Model):
+    """
+    Model representing a disease classification.
+
+    Supports hierarchical structure of diseases using parent-child relationships.
+    This allows grouping diseases into categories and subcategories.
+    """
     _name = 'hr_hospital.disease'
     _description = 'Disease'
 
@@ -31,10 +37,26 @@ class HospitalDisease(models.Model):
 
     @api.constrains('parent_id')
     def _check_no_recursion(self):
+        """
+        Prevent recursive hierarchy in diseases.
+
+        Ensures that a disease cannot be its own ancestor,
+        avoiding infinite loops in parent-child relationships.
+
+        :raises ValidationError: if recursion is detected
+        """
         if not self._check_recursion():
             raise ValidationError("Recursive hierarchy is not allowed")
 
     def name_get(self):
+        """
+        Customize display name of diseases.
+
+        Builds a full hierarchical name including parent diseases,
+        e.g. "Parent / Child / Subchild".
+
+        :return: list of tuples (id, display_name)
+        """
         result = []
         for rec in self:
             name = rec.name
@@ -54,5 +76,13 @@ class HospitalDisease(models.Model):
     )
 
     def _compute_short_name(self):
+        """
+        Compute short name for disease.
+
+        Currently duplicates the main name, but can be extended
+        for abbreviations or simplified labels.
+
+        :return: None
+        """
         for rec in self:
             rec.short_name = rec.name

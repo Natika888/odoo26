@@ -6,6 +6,12 @@ _logger = logging.getLogger(__name__)
 
 
 class HospitalPatient(models.Model):
+    """
+    Model representing a patient.
+
+    Stores personal data, assigned doctors, insurance information,
+    and provides access to patient visit history.
+    """
     _name = 'hr_hospital.patient'
     _description = 'Patient'
     _inherit = ['hr_hospital.medic.info']
@@ -38,17 +44,19 @@ class HospitalPatient(models.Model):
 
     @api.model
     def create(self, vals_list):
+        """ Override create method to assign current user by default.
+        If user_id is not provided, it will be set to the current user.
+        :param vals_list: list of values for new records
+        :return: created record(s) """
         for vals in vals_list:
             if not vals.get('user_id'):
                 vals['user_id'] = self.env.user.id
         return super().create(vals_list)
-    #check
-    # def create(self, vals):
-    #     if not vals.get('user_id'):
-    #         vals['user_id'] = self.env.user.id
-    #     return super().create(vals)
+
 
     def action_open_patient_visits(self):
+        """ Open list and form views of visits related to the patient.
+         :return: action dictionary for visit records """
         self.ensure_one()
 
         return {
@@ -60,6 +68,8 @@ class HospitalPatient(models.Model):
         }
 
     def action_create_visit(self):
+        """ Open form to create a new visit with patient pre-filled.
+        :return: action dictionary for visit creation form """
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',

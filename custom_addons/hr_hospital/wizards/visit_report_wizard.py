@@ -4,6 +4,16 @@ from odoo import fields, models
 
 
 class VisitReportWizard(models.TransientModel):
+    """
+    Wizard for generating visit reports with flexible filtering.
+
+    Allows filtering visits by:
+    - doctors
+    - patients
+    - disease
+    - date range
+    - completion status
+    """
     _name = 'visit.report.wizard'
     _description = 'Visit Report Wizard'
 
@@ -28,6 +38,9 @@ class VisitReportWizard(models.TransientModel):
     )
 
     def default_get(self, fields_list):
+        """ Pre-fill wizard fields based on context.
+        If wizard is opened from: - patient → pre-fill patient_ids - doctor → pre-fill doctor_ids
+        :param fields_list: requested fields :return: default values dictionary """
         res = super().default_get(fields_list)
 
         active_model = self.env.context.get('active_model')
@@ -42,6 +55,9 @@ class VisitReportWizard(models.TransientModel):
         return res
 
     def action_show_visits(self):
+        """ Build domain based on selected filters and open visits.
+        Applies filters: - patient - doctor - date range - state (done) - disease
+        :return: action dictionary to display filtered visits """
         domain = []
 
         if self.patient_ids:

@@ -4,6 +4,13 @@ from odoo import api, fields, models
 
 
 class HospitalMedicInfo(models.AbstractModel):
+    """
+    Abstract model for storing common medical information.
+
+    This model is inherited by other models (e.g., Patient, Doctor)
+    to provide shared fields such as blood group, gender, birthdate,
+    and automatically computed age.
+    """
     _name = 'hr_hospital.medic.info'
     _description = 'Medical Info'
 
@@ -40,6 +47,9 @@ class HospitalMedicInfo(models.AbstractModel):
 
     @api.depends('birth_date')
     def _compute_age(self):
+        """ Compute age based on birthdate.
+        Calculates full years difference between today and birthdate.
+        If birthdate is not set, age is 0. """
         today = date.today()
         for rec in self:
             if rec.birth_date:

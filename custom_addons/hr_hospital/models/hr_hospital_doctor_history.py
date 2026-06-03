@@ -3,6 +3,12 @@ from odoo.exceptions import ValidationError
 
 
 class HospitalDoctorHistory(models.Model):
+    """
+    Model representing the history of doctor assignments to a patient.
+
+    Stores information about which doctor was assigned to a patient,
+    when the assignment started, and when it was changed.
+    """
     _name = 'hr_hospital.doctor.history'
     _description = 'Doctor History'
 
@@ -33,10 +39,11 @@ class HospitalDoctorHistory(models.Model):
         default=True
     )
 
-    # display_name = fields.Char(compute='_compute_display_name')
 
     @api.onchange('assign_date', 'change_date')
     def _onchange_dates(self):
+        """ Validate that change date is not earlier than assign date.
+         :raises ValidationError: if change_date < assign_date """
         if self.assign_date and self.change_date:
             if self.change_date < self.assign_date:
                 raise ValidationError(
@@ -45,6 +52,8 @@ class HospitalDoctorHistory(models.Model):
 
     @api.depends('patient_id', 'doctor_id', 'assign_date')
     def _compute_display_name(self):
+        """ Compute display name for doctor history record.
+        Format: Patient - Doctor (Category) Date """
         for rec in self:
             patient = rec.patient_id.name or ''
             doctor = rec.doctor_id.name or ''

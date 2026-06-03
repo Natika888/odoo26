@@ -2,6 +2,12 @@ from odoo import fields, models
 
 
 class HospitalDoctorCategory(models.Model):
+    """
+    Model representing doctor categories.
+
+    Categories are used to classify doctors (e.g., Surgeon, Therapist, Intern)
+    and help organize them within the system.
+    """
     _name = 'hr_hospital.doctor.category'
     _description = 'Doctor Category'
     _order = 'sequence, name'

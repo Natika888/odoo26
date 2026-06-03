@@ -2,8 +2,17 @@ from odoo.tests.common import TransactionCase
 
 
 class HospitalTestCommon(TransactionCase):
+    """
+    Common test class for HR Hospital module.
+
+    Provides shared test data and model references
+    for other test cases (patients, doctors, visits, diseases).
+    """
 
     def setUp(self):
+        """ Initialize common test data.
+        Creates: - test disease - test doctor - test patient
+        Also prepares model references for reuse in tests. """
         super().setUp()
 
         self.Patient = self.env['hr_hospital.patient']

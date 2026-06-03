@@ -2,6 +2,16 @@ from odoo import fields, models
 
 
 class DiseaseReportWizard(models.TransientModel):
+    """
+    Wizard for generating disease-based visit reports.
+
+    Allows filtering visits by:
+    - doctors
+    - diseases
+    - date range
+
+    Results are displayed grouped by disease.
+    """
     _name = 'hr_hospital.disease.report.wizard'
     _description = 'Disease Report Wizard'
 
@@ -19,6 +29,9 @@ class DiseaseReportWizard(models.TransientModel):
     date_to = fields.Date(string="Date To")
 
     def action_show_report(self):
+        """ Generate and display filtered visit report.
+        Builds domain based on selected filters and opens visit records grouped by disease.
+        :return: action dictionary for opening report view """
         self.ensure_one()
 
         domain = []

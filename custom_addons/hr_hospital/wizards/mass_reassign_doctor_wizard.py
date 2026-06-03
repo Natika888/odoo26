@@ -2,6 +2,12 @@ from odoo import fields, models
 
 
 class MassReassignDoctorWizard(models.TransientModel):
+    """
+    Wizard for mass reassignment of doctors to patients.
+
+    Allows selecting a new doctor and applying the change
+    to multiple selected patients while creating history records.
+    """
     _name = 'mass.reassign.doctor.wizard'
     _description = 'Mass Reassign Doctor Wizard'
 
@@ -17,6 +23,9 @@ class MassReassignDoctorWizard(models.TransientModel):
     )
 
     def action_apply(self):
+        """ Apply doctor reassignment to selected patients.
+        Performs the following: - creates doctor history records - updates personal doctor for each patient
+        :return: action to close the wizard window """
         patients = self.env['hr_hospital.patient'].browse(
             self.env.context.get('active_ids', [])
         )
